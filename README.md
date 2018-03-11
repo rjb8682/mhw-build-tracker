@@ -10,3 +10,7 @@ A build tracker for Monster Hunter World
 * Run `yarn install`
 * Run `yarn start`
 * Open [This Link](http://localhost:8080/)
+
+# MHW Api Docs
+
+https://github.com/LartTyler/MHWDB-Docs/wiki
