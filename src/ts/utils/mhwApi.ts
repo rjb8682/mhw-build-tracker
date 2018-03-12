@@ -56,11 +56,11 @@ export class MHWApi {
         return new HttpClient(httpClientConfig);
     })();
 
-    public static getWeapons(callback: (result: ApiResult<Weapon[]>) => void): void {
+    public static getWeapons(idOrSlug: string | null, callback: (result: ApiResult<Weapon[]>) => void): void {
         const wrappedCallback = (request: HttpRequest, response: HttpResponse) => {
             callback(apiArrayResultFromParse(response, Weapon.parse, "warn"));
         };
 
-        MHWApi.http.get("/weapons", null, wrappedCallback);
+        MHWApi.http.get(`/weapons${idOrSlug != null ? `/${idOrSlug}` : ""}`, null, wrappedCallback);
     }
 }

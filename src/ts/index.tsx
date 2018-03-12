@@ -41,7 +41,7 @@ class Main extends React.Component<{}, MainState> {
             status: { key: "loading" },
         });
 
-        MHWApi.getWeapons(result => {
+        MHWApi.getWeapons(null, result => {
             if (result.success == true) {
                 this.setState({
                     status: { key: "ready" },
