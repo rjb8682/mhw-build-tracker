@@ -1,0 +1,30 @@
+{
+  "branding": {
+    "siteName": "Build Tracker"
+  },
+  "general": {
+    "close": "Close",
+    "done": "Done",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "next": "Next",
+    "back": "Back",
+    "open": "Open",
+    "select": "Select",
+    "skip": "Skip",
+    "save": "Save",
+    "submit": "Submit",
+    "search": "Search",
+    "send": "Send",
+    "email": "Email",
+    "edit": "Edit",
+    "reload": "Reload",
+    "delete": "Delete",
+    "genericError": "A problem has occurred.",
+    "copied": "Copied",
+    "navigate": "Navigate",
+    "retry": "Retry",
+    "xAway": "{{distance}} away"
+  }
+}
