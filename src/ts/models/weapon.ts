@@ -5,6 +5,26 @@ export enum WeaponTypeEnum {
     gunlance, "switch-axe", "charge-blade", "insect-glaive", "light-bowgun", "heavy-bowgun", bow,
 }
 
+export class Crafting {
+    private constructor(
+        public craftable: boolean,
+        public previous: number | null,
+        public branches: number[],
+    ) {}
+
+    static parse(o: any): ParseResult<Crafting> {
+        try {
+            return ParseUtils.parseSuccess(new Crafting(
+                ParseUtils.getBoolean(o, "craftable"),
+                ParseUtils.getNumberOrNull(o, "previous"),
+                ParseUtils.getArray(o, "branches"),
+            ));
+        } catch (e) {
+            return ParseUtils.parseFailure<Crafting>(`Invalid Crafting: ${e.message}`);
+        }
+    }
+}
+
 export class Weapon {
     private constructor(
         public id: number,
@@ -13,6 +33,7 @@ export class Weapon {
         public type: WeaponTypeEnum,
         public rarity: number,
         public attributes: any,
+        public crafting: Crafting,
     ) {}
 
     static parse(o: any): ParseResult<Weapon> {
@@ -24,6 +45,7 @@ export class Weapon {
                 ParseUtils.getEnum(o, "type", WeaponTypeEnum),
                 ParseUtils.getNumber(o, "rarity"),
                 o["attributes"],
+                ParseUtils.getSubobject(o, "crafting", Crafting.parse),
             ));
         } catch (e) {
             return ParseUtils.parseFailure<Weapon>(`Invalid Weapon: ${e.message}`);
@@ -40,6 +62,7 @@ export class Weapon {
             case 6: return "#6063c8";
             case 7: return "#8365d6";
             case 8: return "#b87d62";
+            default: return "#000000";
        }
     }
 
