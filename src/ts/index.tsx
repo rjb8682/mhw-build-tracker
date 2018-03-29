@@ -2,29 +2,14 @@ import * as i18n from 'i18next';
 import * as XHR from "i18next-xhr-backend";
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import {Loader, Message} from "semantic-ui-react";
+import {Card, Header, Label, Loader, Message} from "semantic-ui-react";
 import {Weapon, WeaponType} from "./models/weapon";
 import {MHWApi} from "./utils/mhwApi";
 import Options = i18n.InitOptions;
 
 interface MainState {
     status: { key: "ready" } | { key: "error", message: string } | { key: "loading" };
-    weapons: {
-        greatSword: Weapon[],
-        longSword: Weapon[],
-        swordAndShield: Weapon[],
-        dualBlades: Weapon[],
-        hammer: Weapon[],
-        huntingHorn: Weapon[],
-        lance: Weapon[],
-        gunlance: Weapon[],
-        switchAxe: Weapon[],
-        chargeBlade: Weapon[],
-        insectGlaive: Weapon[],
-        lightBowgun: Weapon[],
-        heavyBowgun: Weapon[],
-        bow: Weapon[],
-    };
+    weapons: WeaponType[];
 }
 
 class Main extends React.Component<{}, MainState> {
@@ -47,22 +32,7 @@ class Main extends React.Component<{}, MainState> {
 
         this.state = {
             status: { key: "ready" },
-            weapons: {
-                greatSword: [],
-                longSword: [],
-                swordAndShield: [],
-                dualBlades: [],
-                hammer: [],
-                huntingHorn: [],
-                lance: [],
-                gunlance: [],
-                switchAxe: [],
-                chargeBlade: [],
-                insectGlaive: [],
-                lightBowgun: [],
-                heavyBowgun: [],
-                bow: [],
-            },
+            weapons: [],
         };
     }
 
@@ -73,24 +43,27 @@ class Main extends React.Component<{}, MainState> {
 
         MHWApi.getWeapons(null, result => {
             if (result.success == true) {
+                const weaponTypes: WeaponType[] = [];
+                result.value.forEach(w => {
+                    const type = w.type;
+                    if (weaponTypes.filter(wt => wt.key == type).length > 0) {
+                        // Key exists, add it to the list
+                        weaponTypes.forEach(wt => {
+                            if (wt.key == type) {
+                                wt.weapons.push(w);
+                            }
+                        });
+                    } else {
+                        weaponTypes.push({
+                            key: type,
+                            weapons: [w],
+                        });
+                    }
+                });
+
                 this.setState({
                     status: { key: "ready" },
-                    weapons: {
-                        greatSword: result.value.filter(w => WeaponType[w.type] == "great-sword"),
-                        longSword: [],
-                        swordAndShield: [],
-                        dualBlades: [],
-                        hammer: [],
-                        huntingHorn: [],
-                        lance: [],
-                        gunlance: [],
-                        switchAxe: [],
-                        chargeBlade: [],
-                        insectGlaive: [],
-                        lightBowgun: [],
-                        heavyBowgun: [],
-                        bow: [],
-                    },
+                    weapons: weaponTypes,
                 });
             } else {
                 console.log("Failed to grab weapons");
@@ -120,10 +93,25 @@ class Main extends React.Component<{}, MainState> {
         }
 
         return (
-            <div id="mainRoot">
-                {weapons.map(w => (
-                    <div>
-                        {w.name}
+            <div id="mainRoot" style={{padding: "20px"}}>
+                {weapons.map(wt => (
+                    <div key={wt.key}>
+                        <Header as="h2" content={Weapon.weaponEnumToName(wt.key)}/>
+                        <Card.Group style={{marginBottom: "20px"}}>
+                            {wt.weapons.map(w => (
+                                <Card key={w.id}>
+                                    <Card.Content>
+                                        <Card.Header>
+                                            {w.name}
+                                        </Card.Header>
+                                        <Card.Meta>
+                                            <Label style={{backgroundColor: Weapon.getRarityColor(w.rarity), color: "white"}}
+                                                   content={`Rarity ${w.rarity}`}/>
+                                        </Card.Meta>
+                                    </Card.Content>
+                                </Card>
+                            ))}
+                        </Card.Group>
                     </div>
                 ))}
             </div>
