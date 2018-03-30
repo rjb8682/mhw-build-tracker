@@ -71,6 +71,27 @@ class Main extends React.Component<{}, MainState> {
         });
     }
 
+    private weaponTypeToCardGroup(wt: WeaponType): JSX.Element {
+        return (
+            <Card.Group style={{marginBottom: "20px"}}>
+                {wt.weapons.map(w => (
+                    <Card key={w.id}>
+                        <Card.Content>
+                            <Card.Header style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                                <span>{w.name}</span>
+                                <img src={w.weaponToRarityImage()} style={{width: "28px", height: "28px"}}/>
+                            </Card.Header>
+                            <Card.Meta>
+                                <Label style={{backgroundColor: Weapon.getRarityColor(w.rarity), color: "white"}}
+                                       content={`Rarity ${w.rarity}`}/>
+                            </Card.Meta>
+                        </Card.Content>
+                    </Card>
+                ))}
+            </Card.Group>
+        );
+    }
+
     render() {
         const {status, weapons} = this.state;
 
@@ -97,22 +118,7 @@ class Main extends React.Component<{}, MainState> {
                 {weapons.map(wt => (
                     <div key={wt.key}>
                         <Header as="h2" content={Weapon.weaponEnumToName(wt.key)}/>
-                        <Card.Group style={{marginBottom: "20px"}}>
-                            {wt.weapons.map(w => (
-                                <Card key={w.id}>
-                                    <Card.Content>
-                                        <Card.Header style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                                            <span>{w.name}</span>
-                                            <img src={w.weaponToRarityImage()} style={{width: "28px", height: "28px"}}/>
-                                        </Card.Header>
-                                        <Card.Meta>
-                                            <Label style={{backgroundColor: Weapon.getRarityColor(w.rarity), color: "white"}}
-                                                   content={`Rarity ${w.rarity}`}/>
-                                        </Card.Meta>
-                                    </Card.Content>
-                                </Card>
-                            ))}
-                        </Card.Group>
+                        {this.weaponTypeToCardGroup(wt)}
                     </div>
                 ))}
             </div>

@@ -80,7 +80,9 @@ export class Weapon {
             weaponType = "longsword";
         }
 
-        return `https://monsterhunterworld.wiki.fextralife.com/file/Monster-Hunter-World/rare-${this.rarity}-${weaponType}-mhw_tree${weaponType == "insect-glaive" ? "_tree" : ""}.png`;
+        const baseUrl = "https://monsterhunterworld.wiki.fextralife.com/file/Monster-Hunter-World/";
+
+        return `${baseUrl}rare-${this.rarity}-${weaponType}-mhw_tree${weaponType == "insect-glaive" ? "_tree" : ""}.png`;
     }
 }
 
