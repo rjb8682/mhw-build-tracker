@@ -101,8 +101,9 @@ class Main extends React.Component<{}, MainState> {
                             {wt.weapons.map(w => (
                                 <Card key={w.id}>
                                     <Card.Content>
-                                        <Card.Header>
-                                            {w.name}
+                                        <Card.Header style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                                            <span>{w.name}</span>
+                                            <img src={w.weaponToRarityImage()} style={{width: "28px", height: "28px"}}/>
                                         </Card.Header>
                                         <Card.Meta>
                                             <Label style={{backgroundColor: Weapon.getRarityColor(w.rarity), color: "white"}}

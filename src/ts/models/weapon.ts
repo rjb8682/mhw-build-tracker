@@ -69,6 +69,11 @@ export class Weapon {
     static weaponEnumToName(wEnum: WeaponTypeEnum) {
         return WeaponTypeEnum[wEnum].split("-").map(s => s == "and" ? s : s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
     }
+
+    weaponToRarityImage(): string {
+        const weaponType = WeaponTypeEnum[this.type].split("-").join("").toLowerCase();
+        return `https://monsterhunterworld.wiki.fextralife.com/file/Monster-Hunter-World/rare-${this.rarity}-${weaponType}-mhw_tree.png`;
+    }
 }
 
 export interface WeaponType {
