@@ -71,8 +71,16 @@ export class Weapon {
     }
 
     weaponToRarityImage(): string {
-        const weaponType = WeaponTypeEnum[this.type].split("-").join("").toLowerCase();
-        return `https://monsterhunterworld.wiki.fextralife.com/file/Monster-Hunter-World/rare-${this.rarity}-${weaponType}-mhw_tree.png`;
+        let weaponType = WeaponTypeEnum[this.type].toLowerCase();
+        if (this.type == WeaponTypeEnum["sword-and-shield"]) {
+            weaponType = "sword-shield";
+        } else if (this.type == WeaponTypeEnum["great-sword"]) {
+            weaponType = "greatsword";
+        } else if (this.type == WeaponTypeEnum["long-sword"]) {
+            weaponType = "longsword";
+        }
+
+        return `https://monsterhunterworld.wiki.fextralife.com/file/Monster-Hunter-World/rare-${this.rarity}-${weaponType}-mhw_tree${weaponType == "insect-glaive" ? "_tree" : ""}.png`;
     }
 }
 
