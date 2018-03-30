@@ -1,4 +1,5 @@
 import {ParseResult, ParseUtils} from 'bryx-cereal';
+import {MaterialCost} from "./item";
 
 export enum WeaponTypeEnum {
     "great-sword", "long-sword", "sword-and-shield", "dual-blades", hammer, "hunting-horn", lance,
@@ -34,6 +35,8 @@ export class Weapon {
         public rarity: number,
         public attributes: any,
         public crafting: Crafting,
+        public craftingMaterials: MaterialCost[],
+        public upgradeMaterials: MaterialCost[],
     ) {}
 
     static parse(o: any): ParseResult<Weapon> {
@@ -46,6 +49,8 @@ export class Weapon {
                 ParseUtils.getNumber(o, "rarity"),
                 o["attributes"],
                 ParseUtils.getSubobject(o, "crafting", Crafting.parse),
+                ParseUtils.getArrayOfSubobjects(o, "craftingMaterials", MaterialCost.parse, "warn"),
+                ParseUtils.getArrayOfSubobjects(o, "upgradeMaterials", MaterialCost.parse, "warn"),
             ));
         } catch (e) {
             return ParseUtils.parseFailure<Weapon>(`Invalid Weapon: ${e.message}`);
