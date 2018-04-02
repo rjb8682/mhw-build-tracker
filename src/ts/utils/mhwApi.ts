@@ -1,7 +1,7 @@
 import {ParseResult, ParseUtils} from "bryx-cereal";
-import {ClientConfig, HttpClient, HttpRequest, HttpResponse, ResponseStatus} from "bryx-spoon";
+import {ClientConfig, HttpClient, HttpRequest, HttpResponse, ResponseStatus, UrlParams} from "bryx-spoon";
 import * as i18n from "i18next";
-import {Weapon} from "../models/weapon";
+import {Weapon, WeaponTypeEnum} from "../models/weapon";
 import {Armor, ArmorSet} from "../models/armor";
 import {Charm} from "../models/charm";
 import {Decoration} from "../models/decoration";
@@ -61,12 +61,17 @@ export class MHWApi {
         return new HttpClient(httpClientConfig);
     })();
 
-    public static getWeapons(idOrSlug: number | string | null, callback: (result: ApiResult<Weapon[]>) => void): void {
+    public static getWeapons(idOrSlug: number | string | null, type: WeaponTypeEnum | null, callback: (result: ApiResult<Weapon[]>) => void): void {
+        const urlParams: UrlParams = {};
+        if (type != null) {
+            urlParams["q"] = `{"type":"${WeaponTypeEnum[type]}"}`;
+        }
+
         const wrappedCallback = (request: HttpRequest, response: HttpResponse) => {
             callback(apiArrayResultFromParse(response, Weapon.parse, "warn"));
         };
 
-        MHWApi.http.get(`/weapons${idOrSlug != null ? `/${idOrSlug}` : ""}`, null, wrappedCallback);
+        MHWApi.http.get(`/weapons${idOrSlug != null ? `/${idOrSlug}` : ""}`, urlParams, wrappedCallback);
     }
 
     public static getArmor(idOrSlug: number | string | null, callback: (result: ApiResult<Armor[]>) => void): void {

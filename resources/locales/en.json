@@ -2,6 +2,12 @@
   "branding": {
     "siteName": "Build Tracker"
   },
+  "weapons": {
+    "header": "Weapons",
+    "menu": {
+      "greatSword": "Great Sword"
+    }
+  },
   "general": {
     "close": "Close",
     "done": "Done",

@@ -1,0 +1,36 @@
+#contentWrapper {
+    min-width: 500px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+#content {
+    height: 100%;
+}
+
+@keyframes rotate {
+    0% {
+        transform: translateY(-50%) rotate(0deg);
+        animation-timing-function: ease;
+    }
+    80% {transform: translateY(-50%) rotate(360deg);}
+}
+
+#loadingIcon {
+    width: 100px;
+    transform: translateY(-50%);
+    margin: auto;
+    display: block;
+    animation-name: rotate;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+}
+
+.centerVertically {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
