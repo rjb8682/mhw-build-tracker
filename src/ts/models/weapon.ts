@@ -1,6 +1,7 @@
 import {ParseResult, ParseUtils} from 'bryx-cereal';
 import {MaterialCost} from "./item";
 import {WeaponAttributes} from "./attributes";
+import {Colors, RarityColors} from "../utils/colors";
 
 export enum WeaponTypeEnum {
     "great-sword", "long-sword", "sword-and-shield", "dual-blades", hammer, "hunting-horn", lance,
@@ -60,15 +61,15 @@ export class Weapon {
 
     static getRarityColor(rarity: number): string {
         switch (rarity) {
-            case 1: return "#b8b8b8";
-            case 2: return "#b8b8b8";
-            case 3: return "#a9bc5a";
-            case 4: return "#66a253";
-            case 5: return "#7eb0b9";
-            case 6: return "#6063c8";
-            case 7: return "#8365d6";
-            case 8: return "#b87d62";
-            default: return "#000000";
+            case 1: return RarityColors.rarity1;
+            case 2: return RarityColors.rarity2;
+            case 3: return RarityColors.rarity3;
+            case 4: return RarityColors.rarity4;
+            case 5: return RarityColors.rarity5;
+            case 6: return RarityColors.rarity6;
+            case 7: return RarityColors.rarity7;
+            case 8: return RarityColors.rarity8;
+            default: return Colors.black;
        }
     }
 
