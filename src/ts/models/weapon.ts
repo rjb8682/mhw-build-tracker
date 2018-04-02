@@ -1,5 +1,6 @@
 import {ParseResult, ParseUtils} from 'bryx-cereal';
 import {MaterialCost} from "./item";
+import {WeaponAttributes} from "./attributes";
 
 export enum WeaponTypeEnum {
     "great-sword", "long-sword", "sword-and-shield", "dual-blades", hammer, "hunting-horn", lance,
@@ -11,6 +12,8 @@ export class Crafting {
         public craftable: boolean,
         public previous: number | null,
         public branches: number[],
+        public craftingMaterials: MaterialCost[],
+        public upgradeMaterials: MaterialCost[],
     ) {}
 
     static parse(o: any): ParseResult<Crafting> {
@@ -19,6 +22,8 @@ export class Crafting {
                 ParseUtils.getBoolean(o, "craftable"),
                 ParseUtils.getNumberOrNull(o, "previous"),
                 ParseUtils.getArray(o, "branches"),
+                ParseUtils.getArrayOfSubobjects(o, "craftingMaterials", MaterialCost.parse, "warn"),
+                ParseUtils.getArrayOfSubobjects(o, "upgradeMaterials", MaterialCost.parse, "warn"),
             ));
         } catch (e) {
             return ParseUtils.parseFailure<Crafting>(`Invalid Crafting: ${e.message}`);
@@ -33,10 +38,8 @@ export class Weapon {
         public name: string,
         public type: WeaponTypeEnum,
         public rarity: number,
-        public attributes: any,
+        public attributes: WeaponAttributes,
         public crafting: Crafting,
-        public craftingMaterials: MaterialCost[],
-        public upgradeMaterials: MaterialCost[],
     ) {}
 
     static parse(o: any): ParseResult<Weapon> {
@@ -47,10 +50,8 @@ export class Weapon {
                 ParseUtils.getString(o, "name"),
                 ParseUtils.getEnum(o, "type", WeaponTypeEnum),
                 ParseUtils.getNumber(o, "rarity"),
-                o["attributes"],
+                ParseUtils.getSubobject(o, "attributes", WeaponAttributes.parse),
                 ParseUtils.getSubobject(o, "crafting", Crafting.parse),
-                ParseUtils.getArrayOfSubobjects(o, "craftingMaterials", MaterialCost.parse, "warn"),
-                ParseUtils.getArrayOfSubobjects(o, "upgradeMaterials", MaterialCost.parse, "warn"),
             ));
         } catch (e) {
             return ParseUtils.parseFailure<Weapon>(`Invalid Weapon: ${e.message}`);
