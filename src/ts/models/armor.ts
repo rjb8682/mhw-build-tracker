@@ -37,3 +37,25 @@ export class Armor {
         }
     }
 }
+
+export class ArmorSet {
+    private constructor(
+        public id: number,
+        public name: string,
+        public rank: ArmorRank,
+        public pieces: Armor[],
+    ) {}
+
+    static parse(o: any): ParseResult<ArmorSet> {
+        try {
+            return ParseUtils.parseSuccess(new ArmorSet(
+                ParseUtils.getNumber(o, "id"),
+                ParseUtils.getString(o, "name"),
+                ParseUtils.getEnum(o, "rank", ArmorRank),
+                ParseUtils.getArrayOfSubobjects(o, "pieces", Armor.parse, "warn"),
+            ));
+        } catch (e) {
+            return ParseUtils.parseFailure<ArmorSet>(`Invalid ArmorSet: ${e.message}`);
+        }
+    }
+}
